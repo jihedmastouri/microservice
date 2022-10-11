@@ -3,7 +3,8 @@ const app = express();
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-// const expressValidator = require('express-validator');
+const eurekaHelper = require("./eureka-helper");
+const PORT = process.env.PORT || 8083;
 
 //db connection
 mongoose
@@ -24,6 +25,8 @@ app.use(bodyParser.json());
 app.use("/folder", foldersRoutes);
 app.use("/client", clientsRoutes);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server listening at port:${process.env.PORT}`);
+eurekaHelper.registerWithEureka("client-folder", PORT);
+
+app.listen(PORT, () => {
+  console.log(`Server listening at port:${PORT}`);
 });
