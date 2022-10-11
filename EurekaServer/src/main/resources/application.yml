@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:8761} # Indicate the default PORT where this service will be started
+  port: ${PORT:8080} # Indicate the default PORT where this service will be started
 
 eureka:
   client:
