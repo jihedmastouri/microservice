@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   # Eureka Serveur:
-  # jwtproject:
+  # eurekaserver:
   #   depends_on:
   #     - constatapp
   #     - jwtproject
@@ -15,9 +15,9 @@ services:
   # SPRING Services:
   # jwtproject:
   #   depends_on:
-  #     - db-jwt
+  #     - dbjwt
   #   links:
-  #     - db-jwt
+  #     - dbjwt
   #   build: ./jwtprj
   #   restart: on-failure
   #   expose:
@@ -34,7 +34,7 @@ services:
   #     - 8082
 
   # MYSQL SERVICES:
-  db-jwt:
+  dbjwt:
     image: mysql
     restart: always
     environment:
@@ -48,7 +48,7 @@ services:
     volumes:
       - $HOME/data/db-jwt:/var/lib/mysql
 
-  db-constat:
+  dbconstat:
     image: mysql
     restart: always
     environment:
@@ -73,3 +73,14 @@ services:
     # expose:
     #   - "8083"
     build: ./ClientFolder
+
+  remb-accident:
+    env_file:
+      - ./Rembors/.env
+    environment:
+      PORT: 8084
+    ports:
+      - "8084:8084"
+    # expose:
+    #   - "8083"
+    build: ./Rembors
