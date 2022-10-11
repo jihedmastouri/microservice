@@ -1,0 +1,40 @@
+version: "3.1"
+
+services:
+  # db-wael:
+  #   image: mysql:5.7
+  #   restart: always
+  #   environment:
+  #     MYSQL_DATABASE: "constatapp"
+  #     MYSQL_USER: "root"
+  #     MYSQL_PASSWORD: ""
+  #     MYSQL_ROOT_PASSWORD: "root"
+  #   ports:
+  #     - "3307:3306"
+  #   expose:
+  #     - "3307"
+  #   volumes:
+  #     - db_wael:/var/lib/mysql
+  jwtproject:
+    depends_on:
+      - db
+    links:
+      - db
+    build: ./jwtprj
+    restart: on-failure
+    ports:
+      - 6868:8080
+
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: jwtproject
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - $HOME/data/db:/var/lib/mysql
+# networks:
+#   my-network-1:
+#     driver: overlay
