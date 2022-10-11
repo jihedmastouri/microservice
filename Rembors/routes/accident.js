@@ -7,7 +7,7 @@ const {
   deleteAccident,
   updateAccident,
   getOneAccident,
-} = require("../controllers/accdient");
+} = require("../controllers/accident");
 
 router.get("/", getAccidents);
 router.post("/post", createAccident);
