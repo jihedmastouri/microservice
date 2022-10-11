@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3.9"
 
 services:
   # Eureka Serveur:
@@ -21,7 +21,7 @@ services:
   #   build: ./jwtprj
   #   restart: on-failure
   #   expose:
-  #     - 8082
+  #     - "8082"
   #
   # constatapp:
   #   depends_on:
@@ -43,8 +43,6 @@ services:
       MYSQL_TCP_PORT: 3308
     ports:
       - "3308:3308"
-    expose:
-      - "3308"
     volumes:
       - $HOME/data/db-jwt:/var/lib/mysql
 
@@ -57,8 +55,6 @@ services:
       MYSQL_TCP_PORT: 3307
     ports:
       - "3307:3307"
-    expose:
-      - "3307"
     volumes:
       - $HOME/data/db-constat:/var/lib/mysql
 
