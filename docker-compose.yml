@@ -1,42 +1,48 @@
 version: "3.9"
 
 services:
-  # Eureka Serveur:
-  # eurekaserver:
-  #   depends_on:
-  #     - constatapp
-  #     - jwtproject
-  #     - client-folder
-  #   build: ./EurekaServer
-  #   restart: on-failure
-  #   ports:
-  #     - "8080:8080"
-  #
+  # Eureka-Serveur:
+  eurekaserver:
+    build: ./EurekaServer
+    restart: on-failure
+    networks:
+      - "services"
+    ports:
+      - "8080:8080"
+
   # SPRING Services:
-  # jwtproject:
-  #   depends_on:
-  #     - dbjwt
-  #   links:
-  #     - dbjwt
-  #   build: ./jwtprj
-  #   restart: on-failure
-  #   expose:
-  #     - "8082"
-  #
-  # constatapp:
-  #   depends_on:
-  #     - db-constat
-  #   links:
-  #     - db-constat
-  #   build: ./Constats
-  #   restart: on-failure
-  #   expose:
-  #     - 8082
+  jwtproject:
+    depends_on:
+      - dbjwt
+      - eurekaserver
+    networks:
+      - "services"
+    build: ./jwtprj
+    restart: on-failure
+    environment:
+      - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
+    expose:
+      - "8082"
+
+  constatapp:
+    depends_on:
+      - dbconstat
+      - eurekaserver
+    networks:
+      - "services"
+    build: ./Constats
+    restart: on-failure
+    environment:
+      - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
+    expose:
+      - 8082
 
   # MYSQL SERVICES:
   dbjwt:
     image: mysql
     restart: always
+    networks:
+      - "services"
     environment:
       MYSQL_DATABASE: jwtproject
       MYSQL_ROOT_PASSWORD: root
@@ -49,6 +55,8 @@ services:
   dbconstat:
     image: mysql
     restart: always
+    networks:
+      - "services"
     environment:
       MYSQL_DATABASE: constatapp
       MYSQL_ROOT_PASSWORD: root
@@ -58,25 +66,34 @@ services:
     volumes:
       - $HOME/data/db-constat:/var/lib/mysql
 
-  # Node Services:
-  client-folder:
-    env_file:
-      - ./ClientFolder/.env
-    environment:
-      PORT: 8083
-    ports:
-      - "8083:8083"
-    # expose:
-    #   - "8083"
-    build: ./ClientFolder
+  # # Node Services:
+  # client-folder:
+  #  	depends_on:
+  #       - eurekaserver
+  #    networks:
+  #     - "services"
+  #   env_file:
+  #     - ./ClientFolder/.env
+  #   environment:
+  #     PORT: 8083
+  #   ports:
+  #     - "8083:8083"
+  #   build: ./ClientFolder
+  #
+  # remb-accident:
+  #   env_file:
+  #     - ./Rembors/.env
+  # depends_on:
+  #   - eurekaserver
+  # networks:
+  #   - "services"
+  #   environment:
+  #     PORT: 8084
+  #   ports:
+  #     - "8084:8084"
+  #   build: ./Rembors
 
-  remb-accident:
-    env_file:
-      - ./Rembors/.env
-    environment:
-      PORT: 8084
-    ports:
-      - "8084:8084"
-    # expose:
-    #   - "8083"
-    build: ./Rembors
+networks:
+  services:
+    name: services
+    driver: bridge

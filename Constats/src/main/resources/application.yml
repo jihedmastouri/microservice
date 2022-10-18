@@ -2,7 +2,7 @@ spring:
   application:
     name: constat-service
   datasource:
-    url: jdbc:mysql://localhost:3307/constatapp?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://dbconstat:3307/constatapp?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
     username: root
     password: root
   jpa:
@@ -21,8 +21,6 @@ eureka:
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
   client:
-    serviceUrl:
-      defaultZone: http://127.0.0.1:8080/eureka/
     healthcheck:
       enabled: true
     lease:

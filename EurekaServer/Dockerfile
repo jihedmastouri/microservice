@@ -1,3 +1,3 @@
-FROM openjdk:8
+FROM openjdk:19
 ADD target/*.jar app.jar
 ENTRYPOINT ["java", "-jar","app.jar"]
