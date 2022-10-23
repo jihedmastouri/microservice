@@ -2,7 +2,7 @@ spring:
   application:
     name: constat-service
   datasource:
-    url: jdbc:mysql://dbconstat:3307/constatapp?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://${db}:3307/constatapp?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
     username: root
     password: root
   jpa:

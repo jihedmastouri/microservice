@@ -12,12 +12,10 @@ services:
   zuulgateway:
     depends_on:
       - eurekaserver
-    links:
-      - eurekaserver
     build: ./ApiGateway
     restart: on-failure
     environment:
-      EUREKA_URI: http://eurekaserver:8080/eureka
+      - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
     ports:
       - "8079:8079"
 
@@ -26,12 +24,10 @@ services:
     depends_on:
       - dbjwt
       - eurekaserver
-    links:
-      - dbjwt
-      - eurekaserver
     build: ./jwtprj
     restart: on-failure
     environment:
+      - db=dbjwt
       - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
     ports:
       - "8082:8082"
@@ -40,12 +36,10 @@ services:
     depends_on:
       - dbconstat
       - eurekaserver
-    links:
-      - dbconstat
-      - eurekaserver
     build: ./Constats
     restart: on-failure
     environment:
+      - db=dbconstat
       - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
     ports:
       - "8081:8081"
@@ -92,14 +86,12 @@ services:
   rembaccident:
     env_file:
       - ./Rembors/.env
-    # depends_on:
-    #   - eurekaserver
+    depends_on:
+      - eurekaserver
+    build: ./Rembors
     environment:
       PORT: 8084
       HOSTNAME: rembaccident
       URL_EU: http://eurekaserver:8080/eureka/
-    links:
-      - eurekaserver
     ports:
       - "8084:8084"
-    build: ./Rembors
