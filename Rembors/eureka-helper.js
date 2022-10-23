@@ -6,23 +6,19 @@ exports.registerWithEureka = function (appName, PORT) {
   const client = new Eureka({
     instance: {
       app: appName,
-      hostName: hostname,
+      instanceId: "node1",
+      hostName: "localhost",
       ipAddr: hostname,
-      port: {
-        $: PORT,
-        "@enabled": "true",
-      },
+      port: PORT,
       vipAddress: appName,
       dataCenterInfo: {
         name: "MyOwn",
       },
-      // registerWithEureka: true,
-      // fetchRegistry: true,
     },
     eureka: {
-      host: url_eureka,
-      port: 8080,
-      servicePath: "/eureka/apps/",
+      serviceUrls: {
+        default: [url_eureka],
+      },
       maxRetries: 10,
       requestRetryDelay: 2000,
     },

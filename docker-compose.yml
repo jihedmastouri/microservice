@@ -5,44 +5,55 @@ services:
   eurekaserver:
     build: ./EurekaServer
     restart: on-failure
-    networks:
-      - "services"
     ports:
       - "8080:8080"
+
+  # Zuul Gateway
+  zuulgateway:
+    depends_on:
+      - eurekaserver
+    links:
+      - eurekaserver
+    build: ./ApiGateway
+    restart: on-failure
+    environment:
+      EUREKA_URI: http://eurekaserver:8080/eureka
+    ports:
+      - "8079:8079"
 
   # SPRING Services:
   jwtproject:
     depends_on:
       - dbjwt
       - eurekaserver
-    networks:
-      - "services"
+    links:
+      - dbjwt
+      - eurekaserver
     build: ./jwtprj
     restart: on-failure
     environment:
       - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
-    expose:
-      - "8082"
+    ports:
+      - "8082:8082"
 
   constatapp:
     depends_on:
       - dbconstat
       - eurekaserver
-    networks:
-      - "services"
+    links:
+      - dbconstat
+      - eurekaserver
     build: ./Constats
     restart: on-failure
     environment:
       - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
-    expose:
-      - "8081"
+    ports:
+      - "8081:8081"
 
   # MYSQL SERVICES:
   dbjwt:
     image: mysql
     restart: always
-    networks:
-      - "services"
     environment:
       MYSQL_DATABASE: jwtproject
       MYSQL_ROOT_PASSWORD: root
@@ -55,8 +66,6 @@ services:
   dbconstat:
     image: mysql
     restart: always
-    networks:
-      - "services"
     environment:
       MYSQL_DATABASE: constatapp
       MYSQL_ROOT_PASSWORD: root
@@ -83,19 +92,14 @@ services:
   rembaccident:
     env_file:
       - ./Rembors/.env
-    depends_on:
-      - eurekaserver
-    networks:
-      - "services"
+    # depends_on:
+    #   - eurekaserver
     environment:
       PORT: 8084
-      URL_EU: eurekaserver
       HOSTNAME: rembaccident
-    expose:
-      - "8084"
+      URL_EU: http://eurekaserver:8080/eureka/
+    links:
+      - eurekaserver
+    ports:
+      - "8084:8084"
     build: ./Rembors
-
-networks:
-  services:
-    name: services
-    driver: bridge
