@@ -35,7 +35,7 @@ services:
     environment:
       - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
     expose:
-      - 8082
+      - "8081"
 
   # MYSQL SERVICES:
   dbjwt:
@@ -80,18 +80,20 @@ services:
   #     - "8083:8083"
   #   build: ./ClientFolder
   #
-  # remb-accident:
-  #   env_file:
-  #     - ./Rembors/.env
-  # depends_on:
-  #   - eurekaserver
-  # networks:
-  #   - "services"
-  #   environment:
-  #     PORT: 8084
-  #   ports:
-  #     - "8084:8084"
-  #   build: ./Rembors
+  rembaccident:
+    env_file:
+      - ./Rembors/.env
+    depends_on:
+      - eurekaserver
+    networks:
+      - "services"
+    environment:
+      PORT: 8084
+      URL_EU: eurekaserver
+      HOSTNAME: rembaccident
+    expose:
+      - "8084"
+    build: ./Rembors
 
 networks:
   services:
