@@ -1,11 +1,14 @@
 const Eureka = require("eureka-js-client").Eureka;
+const url_eureka = process.env.URL_EU || "localhost";
+const hostname = process.env.HOSTNAME || "localhost";
 
 exports.registerWithEureka = function (appName, PORT) {
   const client = new Eureka({
     instance: {
       app: appName,
       hostName: "localhost",
-      ipAddr: "192.168.1.25",
+      instanceId: appName + hostname,
+      ipAddr: hostname,
       port: PORT,
       vipAddress: appName,
       dataCenterInfo: {
@@ -13,15 +16,19 @@ exports.registerWithEureka = function (appName, PORT) {
       },
     },
     eureka: {
-      serviceUrls: {
-        default: ["http://localhost:8080/eureka/"],
-      },
+      host: url_eureka,
+      port: 8080,
+      servicePath: "/eureka/apps/",
       maxRetries: 10,
       requestRetryDelay: 2000,
     },
   });
 
   client.logger.level("debug");
+
+  client.start((error) => {
+    console.log(error || "user service registered");
+  });
 
   function exitHandler(options, exitCode) {
     if (options.cleanup) {

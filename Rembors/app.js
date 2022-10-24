@@ -24,8 +24,8 @@ app.use(bodyParser.json());
 app.use("/remb", rembRoutes);
 app.use("/accident", accidentRemb);
 
+eurekaHelper.registerWithEureka("Rembos", PORT);
+
 app.listen(PORT, () => {
   console.log(`Server listening at port:${PORT}`);
 });
-
-eurekaHelper.registerWithEureka("Rembos", PORT);

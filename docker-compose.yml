@@ -69,20 +69,20 @@ services:
     volumes:
       - $HOME/data/db-constat:/var/lib/mysql
 
-  # # Node Services:
-  # client-folder:
-  #  	depends_on:
-  #       - eurekaserver
-  #    networks:
-  #     - "services"
-  #   env_file:
-  #     - ./ClientFolder/.env
-  #   environment:
-  #     PORT: 8083
-  #   ports:
-  #     - "8083:8083"
-  #   build: ./ClientFolder
-  #
+  # Node Services:
+  client-folder:
+    env_file:
+      - ./ClientFolder/.env
+    depends_on:
+      - eurekaserver
+    build: ./ClientFolder
+    environment:
+      PORT: 8083
+      HOSTNAME: rembaccident
+      URL_EU: eurekaserver
+    ports:
+      - "8083:8083"
+
   rembaccident:
     env_file:
       - ./Rembors/.env
@@ -92,6 +92,6 @@ services:
     environment:
       PORT: 8084
       HOSTNAME: rembaccident
-      URL_EU: http://eurekaserver:8080/eureka/
+      URL_EU: eurekaserver
     ports:
       - "8084:8084"
