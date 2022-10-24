@@ -12,14 +12,12 @@ services:
   apigateway:
     depends_on:
       - eurekaserver
+      - jwtproject
     build: ./ApiGateway
     restart: on-failure
     environment:
       - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
-      - spring.profiles.active=path
-      - spring.cloud.gateway.routes[0].uri=http://jwtproject:8082
-      - spring.cloud.gateway.routes[0].id=auth-service
-      - spring.cloud.gateway.routes[0].predicates[0]=Path=/auth/**
+      # - spring.profiles.active=path
       # SPRING_CLOUD_GATEWAY_ROUTES[0]_FILTERS[0]: StripPrefix=1
     ports:
       - "8079:8079"

@@ -1,6 +1,17 @@
 spring:
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/auth
+
+  logging:
+    level:
+      root: ERROR
 
 #  cloud:
 #    gateway:
@@ -34,17 +45,18 @@ server:
 
 eureka:
   instance:
-    preferIpAddress: true
-    status-page-url-path: swagger-ui/index.html
+#    preferIpAddress: true
+    status-page-url-path: /auth/api/user
+    hostname: localhost
   client:
     registerWithEureka: true
     fetchRegistry: true
 
-springfox:
-  documentation:
-    swagger:
-      v2:
-        path: /api/uaa/api-docs
+#springfox:
+#  documentation:
+#    swagger:
+#      v2:
+#        path: /api/uaa/api-docs
 
 #whitelistInternal:
 #  - method: GET
