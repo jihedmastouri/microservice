@@ -92,6 +92,6 @@ services:
     environment:
       PORT: 8084
       HOSTNAME: rembaccident
-      URL_EU: eurekaserver
+      EU_HOST: eurekaserver
     ports:
       - "8084:8084"
