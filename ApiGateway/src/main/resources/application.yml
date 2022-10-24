@@ -1,67 +1,59 @@
 spring:
   application:
-    name: api-gateway
+    name: zuul-gateway
   cloud:
     gateway:
       routes:
         - id: auth-service
-          uri: http://localhost:8082
+          uri: lb://auth-service
           predicates:
-            - Path=/auth
+            - Path=/auth/**
 
-  logging:
-    level:
-      root: ERROR
+        - id: constat-service
+          uri: constat-service
+          predicates:
+          - path=/constat/**
 
-#  cloud:
-#    gateway:
-#      routes:
-#        - id: auth
-#          uri: ${a}
-#          predicates:
-#            - Path=/auth/**
-#        - id: constat
-#          uri: ${b}
-#          predicates:
-#          - Path=/constat/**
-#
-#        - id: rembor
-#          uri: rembor
-#          predicates:
-#          - Path=/accident/**
-#
-#        - id: colission
-#          uri: colission
-#          predicates:
-#          - Path=/colission/**
-#
-#        - id: client-folder
-#          uri: client-folder
-#          predicates:
-#          - Path=/client/**
+        - id: rembor
+          uri: rembor
+          predicates:
+          - Path=/accident/**
+
+        - id: colission
+          uri: colission
+          predicates:
+          - Path=/colission/**
+
+        - id: client-folder
+          uri: client-folder
+          predicates:
+          - Path=/client/**
 
 server:
   port: 8079
 
 eureka:
   instance:
-#    preferIpAddress: true
-    status-page-url-path: /auth/api/user
-    hostname: localhost
+    preferIpAddress: true
+    health-check-url-path: /actuator/health
   client:
     registerWithEureka: true
     fetchRegistry: true
 
-#springfox:
-#  documentation:
-#    swagger:
-#      v2:
-#        path: /api/uaa/api-docs
+zuul:
+  host.socket-timeout-millis: 3000
 
-#whitelistInternal:
-#  - method: GET
-#    path: '/api/**/api-docs'
-#  - method: GET
-#    path: '/swagger-ui.html'
-#  - method: GET
-#    path: '/swagger-resources/**'
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api/uaa/api-docs
+
+whitelistInternal:
+  - method: GET
+    path: '/api/**/api-docs'
+  - method: GET
+    path: '/swagger-ui.html'
+  - method: GET
+    path: '/swagger-resources/**'

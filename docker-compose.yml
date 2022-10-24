@@ -9,16 +9,13 @@ services:
       - "8080:8080"
 
   # Zuul Gateway
-  apigateway:
+  zuulgateway:
     depends_on:
       - eurekaserver
-      - jwtproject
     build: ./ApiGateway
     restart: on-failure
     environment:
       - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
-      # - spring.profiles.active=path
-      # SPRING_CLOUD_GATEWAY_ROUTES[0]_FILTERS[0]: StripPrefix=1
     ports:
       - "8079:8079"
 
@@ -37,12 +34,12 @@ services:
 
   constatapp:
     depends_on:
-      - dbglobal
+      - dbconstat
       - eurekaserver
     build: ./Constats
     restart: on-failure
     environment:
-      - db=dbglobal
+      - db=dbconstat
       - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
     ports:
       - "8081:8081"
@@ -69,7 +66,7 @@ services:
       - "3307:3307"
     volumes:
       - $HOME/data/db-constat:/var/lib/mysql
-      - ./mysql/init:/docker-entrypoint-initdb.d
+      - mysql/init:/docker-entrypoint-initdb.d
 
   # Node Services:
   client-folder:
