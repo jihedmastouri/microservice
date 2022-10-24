@@ -57,17 +57,16 @@ services:
     volumes:
       - $HOME/data/db-jwt:/var/lib/mysql
 
-  dbconstat:
+  dbglobal:
     image: mysql
     restart: always
     environment:
-      MYSQL_DATABASE: constatapp
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_TCP_PORT: 3307
     ports:
       - "3307:3307"
     volumes:
       - $HOME/data/db-constat:/var/lib/mysql
+      - mysql/init:/docker-entrypoint-initdb.d
 
   # Node Services:
   client-folder:
