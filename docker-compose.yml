@@ -78,8 +78,8 @@ services:
     build: ./ClientFolder
     environment:
       PORT: 8083
-      HOSTNAME: rembaccident
-      URL_EU: eurekaserver
+      HOSTNAME: client-folder
+      EU_HOST: eurekaserver
     ports:
       - "8083:8083"
 

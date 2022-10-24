@@ -1,23 +1,29 @@
 const Eureka = require("eureka-js-client").Eureka;
-const url_eureka = process.env.URL_EU || "localhost";
-const hostname = process.env.HOSTNAME || "localhost";
+const eurekaHost = process.env.EU_HOST || "127.0.0.1";
+const eurekaPort = 8080;
+const hostName = process.env.HOSTNAME || "localhost";
+const ipAddr = "172.0.0.1";
 
 exports.registerWithEureka = function (appName, PORT) {
   const client = new Eureka({
     instance: {
       app: appName,
-      hostName: "localhost",
-      instanceId: appName + hostname,
-      ipAddr: hostname,
-      port: PORT,
+      hostName: hostName,
+      ipAddr: hostName,
+      port: {
+        $: PORT,
+        "@enabled": "true",
+      },
       vipAddress: appName,
       dataCenterInfo: {
+        "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
         name: "MyOwn",
       },
     },
+    //retry 10 time for 3 minute 20 seconds.
     eureka: {
-      host: url_eureka,
-      port: 8080,
+      host: eurekaHost,
+      port: eurekaPort,
       servicePath: "/eureka/apps/",
       maxRetries: 10,
       requestRetryDelay: 2000,
@@ -38,6 +44,15 @@ exports.registerWithEureka = function (appName, PORT) {
       client.stop();
     }
   }
+
+  client.on("deregistered", () => {
+    process.exit();
+    console.log("after deregistered");
+  });
+
+  client.on("started", () => {
+    console.log("eureka host  " + eurekaHost);
+  });
 
   process.on("SIGINT", exitHandler.bind(null, { exit: true }));
 };

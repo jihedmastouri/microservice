@@ -9,7 +9,7 @@ exports.registerWithEureka = function (appName, PORT) {
     instance: {
       app: appName,
       hostName: hostName,
-      ipAddr: ipAddr,
+      ipAddr: hostName,
       port: {
         $: PORT,
         "@enabled": "true",
