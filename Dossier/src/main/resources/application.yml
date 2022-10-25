@@ -1,9 +1,9 @@
 spring:
 
   application:
-    name: constat-service
+    name: dossier-service
   datasource:
-    url: jdbc:mysql://dbconstat:3307/dossierapp?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://${db}:3307/dossierapp?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
     username: root
     password: root
   jpa:
@@ -15,12 +15,14 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
         format_sql: true
 server:
-  port: 8081
+  port: 8087
 
 eureka:
   instance:
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
+    prefer-ip-address: true
+    status-page-url-path: actuator/health
   client:
     healthcheck:
       enabled: true

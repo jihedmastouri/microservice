@@ -19,28 +19,28 @@ zuul:
     discovery-service:
       path: /discovery
       serviceId: eureka
-    auth-service:
+    auth-service: #2
       path: /auth/**
       serviceId: auth-service
-    constat-service:
+    constat-service: #1
       path: /con/**
       serviceId: constat-service
-    collision-service:
+    collision-service: #3
       path: /col/**
       serviceId: col-service
-    remb-service:
+    remb-service: #6
       path: /remb/**
       serviceId: remb-service
-    devis-service:
+    devis-service: #4
       path: /devis/**
       service-id: devis-service
-    client-service:
-      path: /client/**
-      service-id: client-service
-    repair-service:
+    dossier-service: #7
+      path: /dossier/**
+      service-id: dossier-service
+    repair-service: #5
       path: /repair/**
       service-id: repair-service
-    recl-service:
+    recl-service: #8
       path: /recl/**
       service-id: recl-service
 

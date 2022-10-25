@@ -21,6 +21,18 @@ services:
       - "8079:8079"
 
   # SPRING Services:
+  constatapp:
+    depends_on:
+      - dbglobal
+      - eurekaserver
+    build: ./Constats
+    restart: on-failure
+    environment:
+      - db=dbglobal
+      - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
+    ports:
+      - "8081:8081"
+
   jwtproject:
     depends_on:
       - dbjwt
@@ -33,17 +45,65 @@ services:
     ports:
       - "8082:8082"
 
-  constatapp:
+  collision-service:
     depends_on:
       - dbglobal
       - eurekaserver
-    build: ./Constats
+    build: ./Collisions
     restart: on-failure
     environment:
       - db=dbglobal
       - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
     ports:
-      - "8081:8081"
+      - "8083:8083"
+
+  devis-service:
+    depends_on:
+      - dbglobal
+      - eurekaserver
+    build: ./devis
+    restart: on-failure
+    environment:
+      - db=dbglobal
+      - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
+    ports:
+      - "8084:8084"
+
+  repair-service:
+    depends_on:
+      - dbglobal
+      - eurekaserver
+    build: ./reparation
+    restart: on-failure
+    environment:
+      - db=dbglobal
+      - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
+    ports:
+      - "8085:8085"
+
+  remb-service:
+    depends_on:
+      - dbglobal
+      - eurekaserver
+    build: ./rembour
+    restart: on-failure
+    environment:
+      - db=dbglobal
+      - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
+    ports:
+      - "8086:8086"
+
+  dossier-service:
+    depends_on:
+      - dbglobal
+      - eurekaserver
+    build: ./Dossier
+    restart: on-failure
+    environment:
+      - db=dbglobal
+      - eureka.client.service-url.defaultZone=http://eurekaserver:8080/eureka
+    ports:
+      - "8087:8087"
 
   # MYSQL SERVICES:
   dbjwt:
@@ -70,28 +130,15 @@ services:
       - ./mysql/init:/docker-entrypoint-initdb.d
 
   # Node Services:
-  client-folder:
+  recl-service:
     env_file:
-      - ./ClientFolder/.env
+      - ./Reclamation/.env
     depends_on:
       - eurekaserver
-    build: ./ClientFolder
+    build: ./Reclamation
     environment:
-      PORT: 8083
-      HOSTNAME: client-folder
+      PORT: 8088
+      HOSTNAME: recl-service
       EU_HOST: eurekaserver
     ports:
-      - "8083:8083"
-
-  rembaccident:
-    env_file:
-      - ./Rembors/.env
-    depends_on:
-      - eurekaserver
-    build: ./Rembors
-    environment:
-      PORT: 8084
-      HOSTNAME: rembaccident
-      EU_HOST: eurekaserver
-    ports:
-      - "8084:8084"
+      - "8088:8088"
