@@ -1,33 +1,6 @@
 spring:
   application:
     name: zuul-gateway
-  cloud:
-    gateway:
-      routes:
-        - id: auth-service
-          uri: lb://auth-service
-          predicates:
-            - Path=/auth/**
-
-        - id: constat-service
-          uri: constat-service
-          predicates:
-          - path=/constat/**
-
-        - id: rembor
-          uri: rembor
-          predicates:
-          - Path=/accident/**
-
-        - id: colission
-          uri: colission
-          predicates:
-          - Path=/colission/**
-
-        - id: client-folder
-          uri: client-folder
-          predicates:
-          - Path=/client/**
 
 server:
   port: 8079
@@ -42,7 +15,13 @@ eureka:
 
 zuul:
   host.socket-timeout-millis: 3000
-
+  routes:
+    auth-service:
+      path: /auth/*
+      serviceId: auth-service
+    constat-service:
+      path: /c/*
+      serviceId: constat-service
 
 springfox:
   documentation:
