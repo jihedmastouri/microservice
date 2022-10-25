@@ -15,17 +15,15 @@ mongoose.connection.on("error", (err) => {
   console.log(`DB connection error: ${err.message}`);
 });
 
-const foldersRoutes = require("./routes/folder");
-const clientsRoutes = require("./routes/client");
+const recsRoutes = require("./routes/rec");
 
 //middleware
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 // app.use(expressValidator());
-app.use("/folder", foldersRoutes);
-app.use("/client", clientsRoutes);
+app.use("/", recsRoutes);
 
-eurekaHelper.registerWithEureka("client-folder", PORT);
+eurekaHelper.registerWithEureka("recl-service", PORT);
 
 app.listen(PORT, () => {
   console.log(`Server listening at port:${PORT}`);
