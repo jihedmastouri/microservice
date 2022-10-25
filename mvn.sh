@@ -1,15 +1,14 @@
-# get everything in folder to a list
-a=./
-echo "${a[@]}"
+#!/bin/bash
 
-for i in "$a"/*; do
-	if [ -d "$i" ]; then
+for i in *
+do
+	if [ -d "./$i" ]; then
 		cd $i
 		if [ -f "pom.xml" ]; then
 			echo "Building $i"
 			mvn clean install -DskipTests
-			cd ..
 		fi
+			cd ..
 	fi
 done
 
