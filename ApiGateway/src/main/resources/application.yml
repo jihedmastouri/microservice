@@ -8,7 +8,7 @@ server:
 eureka:
   instance:
     preferIpAddress: true
-    health-check-url-path: /actuator/health
+    status-page-url-path: actuator/health
   client:
     registerWithEureka: true
     fetchRegistry: true
@@ -16,12 +16,33 @@ eureka:
 zuul:
   host.socket-timeout-millis: 3000
   routes:
+    discovery-service:
+      path: /discovery
+      serviceId: eureka
     auth-service:
-      path: /auth/*
+      path: /auth/**
       serviceId: auth-service
     constat-service:
-      path: /c/*
+      path: /con/**
       serviceId: constat-service
+    collision-service:
+      path: /col/**
+      serviceId: col-service
+    remb-service:
+      path: /remb/**
+      serviceId: remb-service
+    devis-service:
+      path: /devis/**
+      service-id: devis-service
+    client-service:
+      path: /client/**
+      service-id: client-service
+    repair-service:
+      path: /repair/**
+      service-id: repair-service
+    recl-service:
+      path: /recl/**
+      service-id: recl-service
 
 springfox:
   documentation:

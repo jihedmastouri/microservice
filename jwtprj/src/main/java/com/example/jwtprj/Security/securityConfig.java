@@ -41,7 +41,7 @@ private final BCryptPasswordEncoder bCryptPasswordEncoder;
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/login/**","/api/token/refresh/**").permitAll();
         http.authorizeRequests().antMatchers(GET,"/api/user/**").hasAnyAuthority("USER");
-        http.authorizeRequests().antMatchers(GET,"/api/users").hasAnyAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(GET,"/api/users").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customauthFilter);
         http.addFilterBefore(new customAuthoriszationFilter(), UsernamePasswordAuthenticationFilter.class);
