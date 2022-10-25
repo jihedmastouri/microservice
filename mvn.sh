@@ -1,17 +1,16 @@
-cd jwtprj
-mvn clean install -DskipTests
-cd ..
+# get everything in folder to a list
+a=./
+echo "${a[@]}"
 
-cd Constats
-mvn clean install -DskipTests
-cd ..
-
-cd EurekaServer
-mvn clean install -DskipTests
-cd ..
-
-cd ApiGateway
-mvn clean install -DskipTests
-cd ..
+for i in "$a"/*; do
+	if [ -d "$i" ]; then
+		cd $i
+		if [ -f "pom.xml" ]; then
+			echo "Building $i"
+			mvn clean install -DskipTests
+			cd ..
+		fi
+	fi
+done
 
 echo "Build complete"
