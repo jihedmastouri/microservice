@@ -10,7 +10,7 @@ exports.getRecs = (req, res) => {
 };
 
 exports.createRec = (req, res) => {
-  const rec = new rec(req.body);
+  const rec = new Rec(req.body);
   rec.save().then((result) => {
     res.json({
       rec: result,

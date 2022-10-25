@@ -17,7 +17,7 @@ zuul:
   host.socket-timeout-millis: 3000
   routes:
     discovery-service:
-      path: /discovery
+      path: /discovery/**
       serviceId: eureka
     auth-service: #2
       path: /auth/**
@@ -52,8 +52,16 @@ springfox:
 
 whitelistInternal:
   - method: GET
-    path: '/api/**/api-docs'
+    path: "/api/**/api-docs"
   - method: GET
-    path: '/swagger-ui.html'
+    path: "/swagger-ui.html"
   - method: GET
-    path: '/swagger-resources/**'
+    path: "/swagger-resources/**"
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+    web:
+      exposure:
+        include: "*"

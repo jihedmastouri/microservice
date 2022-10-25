@@ -10,9 +10,9 @@ const {
 } = require("../controllers/rec");
 
 router.get("/", getRecs);
-router.post("/post", createRec);
-router.delete("/delete/:id", deleteRec);
-router.put("/update/:id", updateRec);
+router.post("/", createRec);
+router.delete("/:id", deleteRec);
+router.put("/:id", updateRec);
 router.get("/:id", getOneRec);
 
 module.exports = router;
